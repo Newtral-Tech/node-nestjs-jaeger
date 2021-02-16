@@ -3,6 +3,12 @@
   "compilerOptions": {
     "rootDir": ".",
     "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@newtral/nestjs-jaeger": ["./src"],
+      "@newtral/nestjs-jaeger/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
+    },
     "types": ["node", "mocha"]
   },
   "include": ["src", "tests"]

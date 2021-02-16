@@ -26,7 +26,7 @@
     "no-console": "error",
     "no-shadow": "warn",
     "no-duplicate-imports": "error",
-    "no-unused-expressions": "error", // disable for chai assertions
+    "no-unused-expressions": "off", // disable for chai assertions
     "no-dupe-class-members": "off", // typescript signature overload
     "no-undef": "off", // typescript already check this
     "no-var": "error",

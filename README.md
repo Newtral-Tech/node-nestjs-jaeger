@@ -1,5 +1,86 @@
 # @newtral/nestjs-jaeger
 
+## Getting Started
+
+### Setting up the Jaeger Module
+
+```ts
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { JaegerMiddleware, JaegerModule, SpanService } from '@newtral/nestjs-jaeger';
+
+@Module({
+  imports: [
+    JaegerModule.forRoot({
+      config: {
+        serviceName: 'my-service-name',
+        reporter: {
+          agentHost: 'localhost',
+          agentPort: 6831
+        }
+      }
+    })
+  ]
+})
+class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(JaegerMiddleware).forRoutes('*');
+  }
+}
+
+const app = await NestFactory.create(AppModule);
+
+await app.listen(3000);
+```
+
+### Using in conjunction with the logger
+
+```ts
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { JaegerLoggerService, JaegerMiddleware, JaegerModule } from '@newtral/nestjs-jaeger';
+import { LoggerModule, LoggerService } from '@newtral/nestjs-logger';
+
+@Module({
+  imports: [
+    LoggerModule.forRoot({
+      prettyPrint: true,
+      logLevel: 'info'
+    }),
+    JaegerModule.forRoot({
+      config: {
+        serviceName: 'my-service-name',
+        reporter: {
+          agentHost: 'localhost',
+          agentPort: 6832
+        },
+        sampler: {
+          type: 'const',
+          param: 1
+        }
+      }
+    })
+  ],
+  // Override the LoggerService provide so we get an instance of
+  // JaegerLoggerService instead
+  providers: [
+    {
+      provide: LoggerService,
+      useClass: JaegerLoggerService
+    }
+  ]
+})
+class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(JaegerMiddleware).forRoutes('*');
+  }
+}
+
+const app = await NestFactory.create(AppModule);
+
+await app.listen(3000);
+```
+
 ## Development
 
 The project use [husky](https://github.com/typicode/husky) and
