@@ -36,7 +36,7 @@ export class TracerService implements OnModuleInit, OnModuleDestroy {
   async onModuleDestroy(): Promise<void> {
     // Also check the close function because it does not exist in the noop tracer
     // which is the tracer we get when config.disable is set to true
-    await new Promise<void>(resolve => this.tracer?.close?.(resolve));
+    await new Promise<void>(resolve => this.tracer?.close?.(resolve) ?? resolve());
 
     this.tracer = undefined;
   }
