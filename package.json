@@ -71,5 +71,10 @@
     "@newtral/nestjs-logger": "^2.0.3",
     "express": "^4.17.1",
     "rxjs": "^6.6.3"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   }
 }
