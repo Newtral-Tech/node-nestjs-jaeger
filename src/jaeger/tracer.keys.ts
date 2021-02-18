@@ -1,3 +1,5 @@
+import { Inject } from '@nestjs/common';
+
 /**
  * Injection token for the tracer options
  *
@@ -11,3 +13,7 @@
  * ```
  */
 export const TRACER_OPTIONS = Symbol('tracer.TRACER_OPTIONS');
+
+export function InjectTracerOptions(): ParameterDecorator {
+  return Inject(TRACER_OPTIONS);
+}

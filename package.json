@@ -29,6 +29,7 @@
     "quick-format-unescaped": "^4.0.1"
   },
   "devDependencies": {
+    "@nestjs/platform-express": "^7.6.12",
     "@nestjs/testing": "^7.6.12",
     "@types/chai": "^4.2.15",
     "@types/faker": "^5.1.6",
@@ -68,6 +69,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^7.6.12",
+    "@nestjs/core": "^7.6.12",
     "@newtral/nestjs-logger": "^2.0.3",
     "express": "^4.17.1",
     "rxjs": "^6.6.3"

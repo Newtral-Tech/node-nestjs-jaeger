@@ -1,14 +1,15 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Span, SpanOptions, Tags } from 'opentracing';
+import { RequestContext } from './request-context';
 import { TracerService } from './tracer.service';
 
-const error = Symbol('tracer.SPAN_ERROR');
+const SPAN_ERROR = Symbol('SPAN_ERROR');
 
-@Injectable({ scope: Scope.REQUEST })
+export const ACTIVE_SPAN = Symbol('ACTIVE_SPAN');
+
+@Injectable()
 export class SpanService {
-  private activeSpan: Span | undefined = undefined;
-
-  constructor(private readonly tracerService: TracerService) {}
+  constructor(private readonly tracerService: TracerService, private readonly requestContext: RequestContext) {}
 
   /** Start a new span */
   startSpan(name: string, options?: SpanOptions): Span {
@@ -19,7 +20,7 @@ export class SpanService {
   startActiveSpan(name: string, options?: SpanOptions): Span {
     const span = this.startSpan(name, options);
 
-    this.activeSpan = span;
+    this.requestContext.set(ACTIVE_SPAN, span);
 
     return span;
   }
@@ -28,14 +29,16 @@ export class SpanService {
   finishSpan(span: Span): void {
     span.finish();
 
-    if (this.activeSpan === span) {
-      this.activeSpan = undefined;
+    const activeSpan = this.getActiveSpan();
+
+    if (span === activeSpan) {
+      this.requestContext.delete(ACTIVE_SPAN);
     }
   }
 
   /** Get the active span. If there is no active span it returns `undefined` */
   getActiveSpan(): Span | undefined {
-    return this.activeSpan;
+    return this.requestContext.get(ACTIVE_SPAN) as Span | undefined;
   }
 
   /**
@@ -62,7 +65,7 @@ export interface WithSpanOptions<R = unknown> {
 
 /** Check if the given span has been marked as error  */
 export function isErroredSpan(span: Span): boolean {
-  return (span as any)[error] === true;
+  return (span as any)[SPAN_ERROR] === true;
 }
 
 /**
@@ -74,6 +77,6 @@ export function markAsErroredSpan(span: Span): void {
     return;
   }
 
-  (span as any)[error] = true;
+  (span as any)[SPAN_ERROR] = true;
   span.setTag(Tags.ERROR, true);
 }

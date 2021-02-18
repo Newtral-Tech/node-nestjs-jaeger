@@ -1,5 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { SpanService, TracerService, WithSpanOptions } from '@newtral/nestjs-jaeger';
+import { ACTIVE_SPAN, RequestContext, SpanService, TracerService, WithSpanOptions } from '@newtral/nestjs-jaeger';
 import { getTestingModule } from '@tests/_helpers/module';
 import { expect } from 'chai';
 import faker from 'faker';
@@ -9,8 +9,10 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 describe('SpanService', () => {
   let tracerModule: TestingModule;
+
   let spanService: SpanService;
   let tracerServiceMock: TracerService;
+  let requestContextMock: RequestContext;
 
   let spanServiceSpy: SpanService;
 
@@ -24,7 +26,9 @@ describe('SpanService', () => {
     tracerModule = await getTestingModule();
 
     tracerServiceMock = mock(TracerService);
-    spanService = new SpanService(instance(tracerServiceMock));
+    requestContextMock = mock(RequestContext);
+
+    spanService = new SpanService(instance(tracerServiceMock), instance(requestContextMock));
 
     spanServiceSpy = spy(spanService);
 
@@ -60,12 +64,17 @@ describe('SpanService', () => {
       const { options, name } = getTestData();
 
       when(spanServiceSpy.startSpan(anything(), anything())).thenReturn(testSpan);
+      when(requestContextMock.set(anything(), anything())).thenReturn();
+      when(spanServiceSpy.getActiveSpan()).thenReturn(testSpan);
 
       const span = spanService.startActiveSpan(name, options);
 
       const activeSpan = spanService.getActiveSpan();
 
       expect(span).to.be.equal(activeSpan);
+      verify(spanServiceSpy.startSpan(name, options)).once();
+      verify(requestContextMock.set(ACTIVE_SPAN, testSpan)).once();
+      verify(spanServiceSpy.getActiveSpan()).once();
     });
   });
 
@@ -76,30 +85,30 @@ describe('SpanService', () => {
       spanService.finishSpan(testSpan);
 
       verify(testSpanMock.finish()).once();
+      verify(spanServiceSpy.getActiveSpan()).once();
+      verify(requestContextMock.delete(anything())).never();
     });
 
     it('should finish the span and set the active span to undefined if it is the active one', async () => {
-      const { options, name } = getTestData();
+      when(testSpanMock.finish()).thenReturn();
+      when(spanServiceSpy.getActiveSpan()).thenReturn(testSpan);
 
-      when(spanServiceSpy.startSpan(anything(), anything())).thenReturn(testSpan);
+      spanService.finishSpan(testSpan);
 
-      const span = spanService.startActiveSpan(name, options);
-      const activeSpan = spanService.getActiveSpan();
-
-      expect(span).to.be.equal(activeSpan);
-
-      spanService.finishSpan(span);
-
-      expect(spanService.getActiveSpan()).to.be.undefined;
       verify(testSpanMock.finish()).once();
+      verify(spanServiceSpy.getActiveSpan()).once();
+      verify(requestContextMock.delete(ACTIVE_SPAN)).once();
     });
   });
 
   describe('#getActiveSpan()', () => {
     it('should return undefined when there is no active span', async () => {
+      when(requestContextMock.get(anything())).thenReturn(undefined);
+
       const span = spanService.getActiveSpan();
 
       expect(span).to.be.undefined;
+      verify(requestContextMock.get(ACTIVE_SPAN)).once();
     });
   });
 

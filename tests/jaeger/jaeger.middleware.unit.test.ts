@@ -1,36 +1,43 @@
-import { JaegerMiddleware, SpanService, TracerService } from '@newtral/nestjs-jaeger';
+import { JaegerMiddleware, RequestContext, RequestSpanService, SpanService, TracerService } from '@newtral/nestjs-jaeger';
 import { EventEmitter } from 'events';
 import { Request, Response } from 'express';
 import faker from 'faker';
-import { JaegerTracer } from 'jaeger-client';
-import { FORMAT_HTTP_HEADERS, Span, SpanContext, Tags } from 'opentracing';
-import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { Span, SpanContext, Tags } from 'opentracing';
+import { anyFunction, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 describe('JaegerMiddleware', () => {
   let jaegerMiddleware: JaegerMiddleware;
 
   let tracerServiceMock: TracerService;
   let spanServiceMock: SpanService;
+  let requestContextMock: RequestContext;
+  let requestSpanServiceMock: RequestSpanService;
 
   let spanMock: Span;
-  let jaegerTracerMock: JaegerTracer;
 
   beforeEach(() => {
     tracerServiceMock = mock(TracerService);
     spanServiceMock = mock(SpanService);
 
     spanMock = mock();
-    jaegerTracerMock = mock();
+    requestContextMock = mock(RequestContext);
+    requestSpanServiceMock = mock(RequestSpanService);
 
-    jaegerMiddleware = new JaegerMiddleware(instance(tracerServiceMock), instance(spanServiceMock));
+    jaegerMiddleware = new JaegerMiddleware(
+      instance(tracerServiceMock),
+      instance(spanServiceMock),
+      instance(requestContextMock),
+      instance(requestSpanServiceMock)
+    );
   });
 
   it('should correctly start an active span', async () => {
-    const { request, response, parentSpan, span, tracer, url } = getTestData();
+    const { request, response, parentSpan, span, url } = getTestData();
 
-    when(tracerServiceMock.getTracer()).thenReturn(tracer);
-    when(jaegerTracerMock.extract(anything(), anything())).thenReturn(parentSpan);
+    when(requestContextMock.run(anything())).thenCall((fn, ...args) => fn(...args));
+    when(tracerServiceMock.extractSpanFromHeaders(anything())).thenReturn(parentSpan);
     when(spanServiceMock.startActiveSpan(anything(), anything())).thenReturn(span);
+    when(requestSpanServiceMock.set(anything())).thenReturn();
     when(spanMock.setTag(anything(), anything())).thenReturn();
     when(spanServiceMock.finishSpan(anything())).thenReturn();
 
@@ -38,8 +45,8 @@ describe('JaegerMiddleware', () => {
 
     response.emit('finish');
 
-    verify(tracerServiceMock.getTracer()).once();
-    verify(jaegerTracerMock.extract(FORMAT_HTTP_HEADERS, request.headers)).once();
+    verify(requestContextMock.run(anyFunction())).once();
+    verify(tracerServiceMock.extractSpanFromHeaders(request.headers)).once();
 
     verify(
       spanServiceMock.startActiveSpan(
@@ -54,6 +61,8 @@ describe('JaegerMiddleware', () => {
         })
       )
     ).once();
+
+    verify(requestSpanServiceMock.set(span)).once();
 
     verify(spanMock.setTag(Tags.HTTP_STATUS_CODE, response.statusCode)).once();
     verify(spanServiceMock.finishSpan(span)).once();
@@ -77,8 +86,7 @@ describe('JaegerMiddleware', () => {
 
     const parentSpan: SpanContext = instance(mock());
     const span: Span = instance(spanMock);
-    const tracer: JaegerTracer = instance(jaegerTracerMock);
 
-    return { request, response, span, parentSpan, tracer, url };
+    return { request, response, span, parentSpan, url };
   }
 });

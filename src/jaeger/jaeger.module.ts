@@ -1,6 +1,8 @@
 import { DynamicModule, Global, ModuleMetadata, Provider } from '@nestjs/common';
 import { TracingConfig, TracingOptions } from 'jaeger-client';
 import { JaegerMiddleware } from './jaeger.middleware';
+import { RequestSpanService } from './request-span.service';
+import { RequestContext } from './request-context';
 import { SpanService } from './span.service';
 import { TRACER_OPTIONS } from './tracer.keys';
 import { TracerService } from './tracer.service';
@@ -25,6 +27,7 @@ export class JaegerModule {
     }
 
     return {
+      global: true,
       module: JaegerModule,
       providers,
       imports,
@@ -36,6 +39,7 @@ export class JaegerModule {
     const providers = getProviders();
 
     return {
+      global: true,
       module: JaegerModule,
       providers: [...providers, { provide: TRACER_OPTIONS, useValue: { ...options } }],
       exports: [...providers, TRACER_OPTIONS]
@@ -55,5 +59,5 @@ export type TracerModuleAsyncOptions = Pick<ModuleMetadata, 'imports'> &
   );
 
 function getProviders(): Provider[] {
-  return [JaegerMiddleware, SpanService, TracerService];
+  return [JaegerMiddleware, SpanService, TracerService, RequestContext, RequestSpanService];
 }

@@ -1,5 +1,7 @@
 export * from './jaeger/jaeger.middleware';
 export * from './jaeger/jaeger.module';
+export * from './jaeger/request-context';
+export * from './jaeger/request-span.service';
 export * from './jaeger/span.service';
 export * from './jaeger/tracer.keys';
 export * from './jaeger/tracer.service';
