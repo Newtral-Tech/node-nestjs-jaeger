@@ -69,7 +69,7 @@ class RequestIdMiddleware implements NestMiddleware {
   constructor(private readonly requestContext: RequestContext) {}
 
   use(req: any, res: any, next: () => void): any {
-    this.requestContext.set(REQUEST_ID, faker.random.uuid());
+    this.requestContext.set(REQUEST_ID, faker.datatype.uuid());
 
     next();
   }

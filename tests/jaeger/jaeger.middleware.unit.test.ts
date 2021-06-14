@@ -71,8 +71,8 @@ describe('JaegerMiddleware', () => {
   function getTestData() {
     const request = new EventEmitter() as Request;
 
-    const baseUrl = `/${faker.random.uuid()}`;
-    const path = `/${faker.random.uuid()}`;
+    const baseUrl = `/${faker.datatype.uuid()}`;
+    const path = `/${faker.datatype.uuid()}`;
     const url = baseUrl + path;
 
     request.headers = {};
@@ -82,7 +82,7 @@ describe('JaegerMiddleware', () => {
     request.method = faker.random.arrayElement(['get', 'post', 'put', 'patch']);
 
     const response = new EventEmitter() as Response;
-    response.statusCode = faker.random.number();
+    response.statusCode = faker.datatype.number();
 
     const parentSpan: SpanContext = instance(mock());
     const span: Span = instance(spanMock);
