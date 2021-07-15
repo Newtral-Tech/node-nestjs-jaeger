@@ -38,7 +38,7 @@ describe('JaegerModule', () => {
   it('should be loaded using forRoot', async () => {
     const initialOptions = { config: { serviceName: faker.lorem.sentence(), disable: true } };
     const module = JaegerModule.forRoot(initialOptions);
-    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module] }).compile();
+    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module.module] }).compile();
 
     const options = tracerModule.get(TRACER_OPTIONS);
     expect(options).to.be.deep.equal(initialOptions);
@@ -60,7 +60,7 @@ describe('JaegerModule', () => {
       useFactory: name => ({ config: { serviceName: name, disable: true } }),
       inject: ['serviceName']
     });
-    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module] }).compile();
+    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module.module] }).compile();
 
     const options = tracerModule.get(TRACER_OPTIONS);
     expect(options).to.be.deep.equal({ config: { serviceName, disable: true } });
@@ -81,7 +81,7 @@ describe('JaegerModule', () => {
       imports: [OptionsModule],
       useExisting: 'options'
     });
-    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module] }).compile();
+    const tracerModule = await Test.createTestingModule({ imports: [module], exports: [module.module] }).compile();
 
     const options = tracerModule.get(TRACER_OPTIONS);
     expect(options).to.be.deep.equal({ config: { serviceName, disable: true } });
