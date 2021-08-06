@@ -29,22 +29,22 @@
     "quick-format-unescaped": "^4.0.3"
   },
   "devDependencies": {
-    "@nestjs/platform-express": "^8.0.2",
-    "@nestjs/testing": "^8.0.2",
+    "@nestjs/platform-express": "^8.0.6",
+    "@nestjs/testing": "^8.0.6",
     "@types/chai": "^4.2.21",
     "@types/faker": "^5.5.7",
-    "@types/mocha": "^8.2.3",
-    "@typescript-eslint/eslint-plugin": "^4.28.3",
-    "@typescript-eslint/parser": "^4.28.3",
+    "@types/mocha": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
     "chai": "^4.3.4",
     "concurrently": "^6.2.0",
-    "eslint": "^7.30.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "faker": "^5.5.3",
     "husky": "^7.0.1",
-    "lint-staged": "^11.0.1",
-    "mocha": "^9.0.2",
+    "lint-staged": "^11.1.2",
+    "mocha": "^9.0.3",
     "nyc": "^15.1.0",
     "prettier": "^2.3.2",
     "standard-version": "^9.3.1",
@@ -69,11 +69,11 @@
     "prepare": "husky install"
   },
   "peerDependencies": {
-    "@nestjs/common": "^8.0.2",
-    "@nestjs/core": "^8.0.2",
-    "@newtral/nestjs-logger": "^3.0.0",
+    "@nestjs/common": "^8.0.6",
+    "@nestjs/core": "^8.0.6",
+    "@newtral/nestjs-logger": "^3.0.1",
     "express": "^4.17.1",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.3.0"
   },
   "release": {
     "branches": [
