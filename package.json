@@ -71,7 +71,7 @@
   "peerDependencies": {
     "@nestjs/common": "^8.0.6",
     "@nestjs/core": "^8.0.6",
-    "@newtral/nestjs-logger": "^3.0.1",
+    "@newtral/nestjs-logger": "^4.0.0",
     "express": "^4.17.1",
     "rxjs": "^7.3.0"
   },
