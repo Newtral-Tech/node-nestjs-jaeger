@@ -140,6 +140,7 @@ describe('RequestContext', () => {
 
       requestContext.run(fn, arg);
 
+      // @ts-ignore
       verify(storageMock.run(anyOfClass(Map), fn, arg)).once();
     });
   });

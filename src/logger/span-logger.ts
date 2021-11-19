@@ -6,33 +6,33 @@ import { markAsErroredSpan } from '../jaeger/span.service';
 export class SpanLogger implements Logger {
   constructor(private readonly logger: Logger, private readonly getSpan: () => Span | undefined) {}
 
-  fatal(msg: string, ...args: any[]): void;
-  fatal(obj: object, msg?: string, ...args: any[]): void;
-  fatal(msg: string | object, ...args: any[]): void {
+  fatal<T extends object>(obj: T, msg?: string, ...args: any[]): void;
+  fatal(obj: unknown, msg?: string, ...args: any[]): void;
+  fatal(msg: string, ...args: any[]): void {
     this.log('fatal', msg, ...args);
   }
 
-  error(msg: string, ...args: any[]): void;
-  error(obj: object, msg?: string, ...args: any[]): void;
-  error(msg: string | object, ...args: any[]): void {
+  error<T extends object>(obj: T, msg?: string, ...args: any[]): void;
+  error(obj: unknown, msg?: string, ...args: any[]): void;
+  error(msg: string, ...args: any[]): void {
     this.log('error', msg, ...args);
   }
 
-  warn(msg: string, ...args: any[]): void;
-  warn(obj: object, msg?: string, ...args: any[]): void;
-  warn(msg: string | object, ...args: any[]): void {
+  warn<T extends object>(obj: T, msg?: string, ...args: any[]): void;
+  warn(obj: unknown, msg?: string, ...args: any[]): void;
+  warn(msg: string, ...args: any[]): void {
     this.log('warn', msg, ...args);
   }
 
-  info(msg: string, ...args: any[]): void;
-  info(obj: object, msg?: string, ...args: any[]): void;
-  info(msg: string | object, ...args: any[]): void {
+  info<T extends object>(obj: T, msg?: string, ...args: any[]): void;
+  info(obj: unknown, msg?: string, ...args: any[]): void;
+  info(msg: string, ...args: any[]): void {
     this.log('info', msg, ...args);
   }
 
-  debug(msg: string, ...args: any[]): void;
-  debug(obj: object, msg?: string, ...args: any[]): void;
-  debug(msg: string | object, ...args: any[]): void {
+  debug<T extends object>(obj: T, msg?: string, ...args: any[]): void;
+  debug(obj: unknown, msg?: string, ...args: any[]): void;
+  debug(msg: string, ...args: any[]): void {
     this.log('debug', msg, ...args);
   }
 
