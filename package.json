@@ -11,8 +11,7 @@
     "name": "Lorens Leon"
   },
   "engines": {
-    "node": ">=14",
-    "npm": ">=7"
+    "node": ">=18"
   },
   "files": [
     "src",
@@ -20,38 +19,38 @@
     "lib"
   ],
   "dependencies": {
-    "@types/express": "^4.17.13",
-    "@types/jaeger-client": "^3.18.3",
+    "@types/express": "^4.17.21",
+    "@types/jaeger-client": "^3.18.7",
     "@types/node": "*",
-    "@types/quick-format-unescaped": "^4.0.0",
+    "@types/quick-format-unescaped": "^4.0.3",
     "jaeger-client": "^3.19.0",
-    "opentracing": "^0.14.5",
+    "opentracing": "^0.14.7",
     "quick-format-unescaped": "^4.0.4"
   },
   "devDependencies": {
-    "@nestjs/platform-express": "^8.2.4",
-    "@nestjs/testing": "^8.2.4",
-    "@types/chai": "^4.3.0",
-    "@types/faker": "^5.5.9",
-    "@types/mocha": "^9.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
-    "@typescript-eslint/parser": "^5.8.0",
-    "chai": "^4.3.4",
-    "concurrently": "^6.5.1",
-    "eslint": "^8.5.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "@nestjs/platform-express": "^10.3.0",
+    "@nestjs/testing": "^10.3.0",
+    "@types/chai": "^4.3.11",
+    "@types/faker": "^6.6.8",
+    "@types/mocha": "^10.0.6",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "chai": "^4.3.10",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "faker": "^5.5.3",
-    "husky": "^7.0.4",
-    "lint-staged": "^12.1.4",
-    "mocha": "^9.1.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.5.1",
-    "standard-version": "^9.3.2",
+    "prettier": "^3.1.1",
+    "standard-version": "^9.5.0",
     "ts-mockito": "^2.6.1",
-    "ts-node": "^10.4.0",
-    "tsconfig-paths": "^3.12.0",
-    "typescript": "~4.5.4"
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "~5.3.3"
   },
   "scripts": {
     "build": "concurrently 'npm:build:*'",
@@ -69,9 +68,9 @@
     "prepare": "husky install"
   },
   "peerDependencies": {
-    "@nestjs/common": "^8.2.4",
-    "@nestjs/core": "^8.2.4",
-    "@newtral/nestjs-logger": "^4.2.0",
+    "@nestjs/common": "^10.3.0",
+    "@nestjs/core": "^10.3.0",
+    "@newtral/nestjs-logger": "github.com:Newtral-Tech/node-nestjs-logger#feature/update-dependencies",
     "express": "^4.17.2",
     "rxjs": "^7.4.0"
   },
