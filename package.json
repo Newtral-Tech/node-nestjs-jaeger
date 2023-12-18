@@ -1,6 +1,6 @@
 {
   "name": "@newtral/nestjs-jaeger",
-  "version": "0.0.0",
+  "version": "4.4.0",
   "description": "Jaeger middleware for NestJS applications",
   "main": "lib/index.js",
   "module": "esm/index.js",
