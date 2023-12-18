@@ -2,7 +2,7 @@ import { TestingModule } from '@nestjs/testing';
 import { ACTIVE_SPAN, RequestContext, SpanService, TracerService, WithSpanOptions } from '@newtral/nestjs-jaeger';
 import { getTestingModule } from '@tests/_helpers/module';
 import { expect } from 'chai';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { JaegerTracer } from 'jaeger-client';
 import { Span, SpanOptions } from 'opentracing';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';

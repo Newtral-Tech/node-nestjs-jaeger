@@ -4,7 +4,7 @@ import { Test } from '@nestjs/testing';
 import { JaegerMiddleware, JaegerModule, SpanService, TRACER_OPTIONS, TracerService } from '@newtral/nestjs-jaeger';
 import { getTestingModule, testTracerConfiguration } from '@tests/_helpers/module';
 import { expect } from 'chai';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 describe('JaegerModule', () => {
   it('should export JaegerInterceptor', async () => {

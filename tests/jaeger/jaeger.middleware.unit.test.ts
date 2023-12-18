@@ -1,7 +1,7 @@
 import { JaegerMiddleware, RequestContext, RequestSpanService, SpanService, TracerService } from '@newtral/nestjs-jaeger';
 import { EventEmitter } from 'events';
 import { Request, Response } from 'express';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Span, SpanContext, Tags } from 'opentracing';
 import { anyFunction, anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
@@ -71,18 +71,18 @@ describe('JaegerMiddleware', () => {
   function getTestData() {
     const request = new EventEmitter() as Request;
 
-    const baseUrl = `/${faker.datatype.uuid()}`;
-    const path = `/${faker.datatype.uuid()}`;
+    const baseUrl = `/${faker.string.uuid()}`;
+    const path = `/${faker.string.uuid()}`;
     const url = baseUrl + path;
 
     request.headers = {};
 
     request.baseUrl = baseUrl;
     request.path = path;
-    request.method = faker.random.arrayElement(['get', 'post', 'put', 'patch']);
+    request.method = faker.helpers.arrayElement(['get', 'post', 'put', 'patch']);
 
     const response = new EventEmitter() as Response;
-    response.statusCode = faker.datatype.number();
+    response.statusCode = faker.number.int();
 
     const parentSpan: SpanContext = instance(mock());
     const span: Span = instance(spanMock);

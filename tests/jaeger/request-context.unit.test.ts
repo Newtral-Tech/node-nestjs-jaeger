@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { RequestContext } from '@newtral/nestjs-jaeger';
 import { AsyncLocalStorage } from 'async_hooks';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { anyOfClass, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 describe('RequestContext', () => {
@@ -23,7 +23,7 @@ describe('RequestContext', () => {
 
   describe('#get()', () => {
     it('should correctly get an item when the store is defined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(store);
 
@@ -34,7 +34,7 @@ describe('RequestContext', () => {
     });
 
     it('should not fail when the store is undefined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(undefined);
 
@@ -47,8 +47,8 @@ describe('RequestContext', () => {
 
   describe('#set()', () => {
     it('should correctly set an item when the store is defined', async () => {
-      const key = faker.datatype.uuid();
-      const value = faker.datatype.uuid();
+      const key = faker.string.uuid();
+      const value = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(store);
 
@@ -59,8 +59,8 @@ describe('RequestContext', () => {
     });
 
     it('should not fail when the store is undefined', async () => {
-      const key = faker.datatype.uuid();
-      const value = faker.datatype.uuid();
+      const key = faker.string.uuid();
+      const value = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(undefined);
 
@@ -73,7 +73,7 @@ describe('RequestContext', () => {
 
   describe('#has()', () => {
     it('should correctly get an item when the store is defined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(store);
 
@@ -84,7 +84,7 @@ describe('RequestContext', () => {
     });
 
     it('should not fail when the store is undefined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(undefined);
 
@@ -99,7 +99,7 @@ describe('RequestContext', () => {
 
   describe('#delete()', () => {
     it('should correctly remove an item when the store is defined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(store);
 
@@ -110,7 +110,7 @@ describe('RequestContext', () => {
     });
 
     it('should not fail when the store is undefined', async () => {
-      const key = faker.datatype.uuid();
+      const key = faker.string.uuid();
 
       when(storageMock.getStore()).thenReturn(undefined);
 
@@ -133,7 +133,7 @@ describe('RequestContext', () => {
     });
 
     it('should correctly run the callback with args', async () => {
-      const arg = faker.datatype.uuid();
+      const arg = faker.string.uuid();
       const fn = () => undefined;
 
       when(storageMock.run(anything(), anything(), anything())).thenReturn();
